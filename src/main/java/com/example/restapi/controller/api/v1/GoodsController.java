@@ -24,7 +24,7 @@ public class GoodsController {
     GoodService goodService;
 
     /**
-     * Get List
+     * 상품 리스트 조회
      * @param pageable
      * @param goods
      * @return
@@ -38,7 +38,7 @@ public class GoodsController {
     }
 
     /**
-     * Get Detail
+     * 상품 상세 조회
      * @param id
      * @return
      */
@@ -54,7 +54,7 @@ public class GoodsController {
     }
 
     /**
-     * Save
+     * 상품 저장
      * @param goodsDTO
      * @return
      */

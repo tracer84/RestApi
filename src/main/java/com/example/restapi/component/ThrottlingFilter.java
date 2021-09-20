@@ -13,9 +13,13 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.Duration;
 
+/**
+ * Throttling 처리를 위한 필터 적용
+ */
 @Component
 public class ThrottlingFilter implements Filter {
 
+    // 초당 최대 접속 횟수 제한
     private Bucket createNewBucket() {
         long overdraft = 4;
         Refill refill = Refill.greedy(10, Duration.ofSeconds(1));
@@ -23,11 +27,20 @@ public class ThrottlingFilter implements Filter {
         return Bucket4j.builder().addLimit(limit).build();
     }
 
+    /**
+     * url 접근시 최대 접속수 제한을 위한 필터
+     * @param servletRequest
+     * @param servletResponse
+     * @param filterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) servletRequest;
         HttpSession session = httpRequest.getSession(true);
 
+        // appkey를 session id로 적용하여 bucket 확인
         //String appKey = SecurityUtils.getThirdPartyAppKey();
         String appkey = session.getId();
         Bucket bucket = (Bucket) session.getAttribute("throttler-" + appkey);

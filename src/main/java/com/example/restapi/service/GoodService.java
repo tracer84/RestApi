@@ -24,16 +24,31 @@ public class GoodService {
     @Autowired
     GoodsRepository goodsRepository;
 
+    /**
+     * 상품 리스트 조회 (페이징처리)
+     * @param pageable
+     * @return
+     */
     public Page<Goods> findAll(Pageable pageable){
         int page = (pageable.getPageNumber() == 0) ? 0 : (pageable.getPageNumber()-1);
         pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC,"id"));
         return goodsRepository.findAll(pageable);
     }
 
+    /**
+     * 상품 id로 조회
+     * @param id
+     * @return
+     */
     public Optional<Goods> findById(int id){
         return goodsRepository.findById(id);
     }
 
+    /**
+     * 상품 저장
+     * @param goodsDTO
+     * @return
+     */
     @Transactional
     public Goods save(GoodsDTO goodsDTO) {
 
